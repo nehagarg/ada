@@ -41,17 +41,19 @@ def initialize(env_path=None, attach_viewer=False, **kw_args):
            attach_viewer = 'qtcoin'
 
     if attach_viewer and env.GetViewer() is None:
+        #Using qtcoin as or_rviz gives seg fault
+        attach_viewer ='qtcoin'
         env.SetViewer(attach_viewer)
         if env.GetViewer() is None:
             raise AdaPyException(
                 'Failed creating viewer of type "{:s}".'.format(attach_viewer))
-     
+
     # Remove the ROS logging handler again. It might have been added when we
     # loaded or_rviz.
     prpy.logger.remove_ros_logger()
 
     import adapy.action # register actions
     import adapy.tsr # register TSR libraries
-    robot.actions = prpy.action.ActionLibrary()    
+    robot.actions = prpy.action.ActionLibrary()
 
     return env, robot
